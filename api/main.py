@@ -12,11 +12,19 @@ import certifi
 from dotenv import load_dotenv
 from datetime import datetime
 
-load_dotenv()
+load_dotenv(dotenv_path="../.env")
 
 app = FastAPI()
 
 connection_string = os.getenv('MONGO_CONNECTION_STRING')
+BACKEND_PORT = int(os.getenv("BACKEND_PORT", 8000))
+
+try:
+    client = MongoClient(connection_string, tlsCAFile=certifi.where())
+    db = client['audio']
+    print("Successfully connected to MongoDB")
+except Exception as e:
+    print(f"Failed to connect to MongoDB: {e}")
 
 # Initialize the AudioTagging model
 model = AudioTagging(checkpoint_path=None, device='cuda')
