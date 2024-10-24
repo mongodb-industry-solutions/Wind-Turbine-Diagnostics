@@ -1,25 +1,39 @@
-version: '3'
 services:
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        MONGODB_URI: ${MONGODB_URI} # Pass the MongoDB URI as a build argument
     ports:
       - "3000:3000"
     environment:
       - NODE_ENV=production
+<<<<<<< Updated upstream
       - NEXT_PUBLIC_MONGODB_URI=${NEXT_PUBLIC_MONGODB_URI}
       - NEXT_PUBLIC_ENV=${NEXT_PUBLIC_ENV}
       - NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL}
     env_file:
       - ./.env  # Ensure Docker Compose reads this file for environment variables
+=======
+      - MONGODB_URI=${MONGODB_URI}
+    env_file:
+      - .env  # Use .env file in the root directory
+
+>>>>>>> Stashed changes
   api:
     build:
       context: ./api
       dockerfile: Dockerfile
+      args:
+        MONGO_CONNECTION_STRING: ${MONGO_CONNECTION_STRING}
     ports:
       - "8000:8000"
     environment:
       - MONGO_CONNECTION_STRING=${MONGO_CONNECTION_STRING}
     env_file:
+<<<<<<< Updated upstream
       - ./.env
+=======
+      - .env  # Use .env file in the root directory
+>>>>>>> Stashed changes
